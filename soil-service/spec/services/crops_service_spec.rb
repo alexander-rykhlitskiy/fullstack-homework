@@ -15,4 +15,13 @@ RSpec.describe CropsService do
       )
     end
   end
+
+  describe '#fetch_crops_by_values' do
+    let(:crops_values) { [3, 3, 2, 1, 1] }
+    subject(:fetch_crops_by_values) { described_class.instance.fetch_crops_by_values(crops_values) }
+
+    it 'returns crops by provided values' do
+      expect(fetch_crops_by_values).to match_array(crops_values.map { include(value: _1) })
+    end
+  end
 end

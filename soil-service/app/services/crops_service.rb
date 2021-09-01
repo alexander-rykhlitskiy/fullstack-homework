@@ -18,7 +18,13 @@ class CropsService
     OATS,
   ].freeze
 
+  CROPS_BY_VALUE = CROPS.index_by { _1[:value] }.freeze
+
   def fetch_all_crops
     CROPS
+  end
+
+  def fetch_crops_by_values(values)
+    values.map { |value| CROPS_BY_VALUE[value.to_i] }
   end
 end
