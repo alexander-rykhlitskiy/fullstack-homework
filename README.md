@@ -1,9 +1,9 @@
 # Crop Planner Simulator
-Farmer Fred is in trouble! For the last five years, he has been getting less and less corn from his fields and is 
+Farmer Fred is in trouble! For the last five years, he has been getting less and less corn from his fields and is
 barley making ends meet. He thinks it’s because his soil quality is rapidly declining but why?
 
-Perhaps you can help him find out! We’re sending you his fields and crops plan, but we are missing a critical piece of 
-information - the humus balance. Humus balance is a great metric of general soil health - the more humus the better! 
+Perhaps you can help him find out! We’re sending you his fields and crops plan, but we are missing a critical piece of
+information - the humus balance. Humus balance is a great metric of general soil health - the more humus the better!
 
 Please implement the humus balance calculator so Mr. Fred could start fixing his soil for the future.
 
@@ -42,6 +42,13 @@ How to calculate humus balance based on our data?
 ### Front-end: Crop Planner
 * CD into the `crop-planner` directory
 * Run `yarn install`
-* Make sure port `3001` is available on your machine    
+* Make sure port `3001` is available on your machine
 * Run `yarn start`
 * Visit `localhost:3001`
+
+## Running E2E tests
+* Start Soil Service
+* Start Crop Planner
+* CD into the `crop-planner` directory
+* Run `yarn run playwright test tests/mainPage.spec.ts`
+* Run `yarn run playwright show-trace trace.zip` to see how it was running
