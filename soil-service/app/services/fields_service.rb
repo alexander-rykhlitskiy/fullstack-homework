@@ -3,7 +3,7 @@ class FieldsService
   include Singleton
 
   def fetch_fields
-    [
+    result = [
       {
         id: 1,
         name: 'Mäeotsa',
@@ -41,5 +41,12 @@ class FieldsService
         ],
       },
     ]
+
+    result.each do |field|
+      crops_values = field[:crops].map { _1[:crop][:value] }
+      field[:humus_balance] = HumusBalanceCalculator.new(crops_values).call
+    end
+
+    result
   end
 end

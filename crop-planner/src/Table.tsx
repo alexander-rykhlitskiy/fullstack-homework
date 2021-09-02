@@ -4,6 +4,7 @@ import { sortBy } from 'lodash'
 import CropSelect from './CropSelect'
 import { Crop, Field, SeasonalCrop } from './types'
 import { fetchCrops, fetchFields } from './api'
+import { buildNewFieldsStateWithHumusBalance } from './buildNewFieldsState'
 import buildNewFieldsState from './buildNewFieldsState'
 
 type Props = {}
@@ -52,8 +53,12 @@ export default class Table extends PureComponent<Props, State> {
 
       {sortBy(field.crops, crop => crop.year).map(seasonalCrop => this.renderCropCell(field, seasonalCrop))}
 
-      <div className="table__cell table__cell--right">--</div>
+      <div className={"table__cell table__cell--right" + this.getColorClass(field.humus_balance)}>{field.humus_balance?.toFixed(1) || '--'}</div>
     </div>
+
+  getColorClass = (humusBalance: number) =>
+    // zero and null should be black
+    humusBalance ? (humusBalance > 0 ? ' dark-green' : ' dark-red') : ''
 
   renderCropCell = (field: Field, seasonalCrop: SeasonalCrop) =>
     <div className="table__cell table__cell--center table__cell--with-select">
@@ -64,8 +69,10 @@ export default class Table extends PureComponent<Props, State> {
       />
     </div>
 
-  changeFieldCrop = (newCrop: Crop | null, fieldId: number, cropYear: number) =>
-    this.setState(
-      buildNewFieldsState(this.state.fields, newCrop, fieldId, cropYear),
-    )
+  changeFieldCrop = (newCrop: Crop | null, fieldId: number, cropYear: number) => {
+    const newState = buildNewFieldsState(this.state.fields, newCrop, fieldId, cropYear);
+    this.setState(newState, async () => {
+      this.setState(await buildNewFieldsStateWithHumusBalance(this.state.fields, fieldId));
+    });
+  }
 }
